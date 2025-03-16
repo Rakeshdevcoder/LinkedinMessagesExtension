@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LinkedIn Message</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <h1>LinkedIn Messages</h1>
+      <button id="refresh-btn">Refresh</button>
+    </header>
+
+    <div class="container">
+      <div id="status" style="display: none"></div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="spam">Spam</button>
+        <button class="filter-btn" data-filter="job">Jobs</button>
+        <button class="filter-btn" data-filter="connection">Connections</button>
+      </div>
+
+      <div id="messages-container"></div>
+
+      <div id="no-messages" style="display: none">
+        <p>No messages found</p>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
