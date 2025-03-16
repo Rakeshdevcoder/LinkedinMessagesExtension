@@ -33,4 +33,52 @@ async function fetchLinkedInMessages() {
   }
   console.log("Found this many conversations:", conversations.length);
 
+  conversations.forEach((convo) => {
+    try {
+      const senderElem = convo.querySelector(
+        "h3.msg-conversation-listitem__participant-names span.truncate"
+      );
+      const senderName = senderElem ? senderElem.textContent.trim() : "Unknown";
+
+      const snippetElem = convo.querySelector(
+        "p.msg-conversation-card__message-snippet"
+      );
+      const snippet = snippetElem ? snippetElem.textContent.trim() : "";
+
+      if (!snippet) return;
+
+      let category = "general";
+      const msg = snippet.toLowerCase();
+
+      if (msg.includes("linkedin offer")) {
+        category = "spam";
+      } else if (msg.includes("via linkedin")) {
+        category = "general";
+      }
+      // Check if it's about jobs
+      else if (
+        msg.includes("job") ||
+        msg.includes("position") ||
+        msg.includes("opportunity") ||
+        msg.includes("hiring") ||
+        msg.includes("role")
+      ) {
+        category = "job";
+      }
+      // Check if it's about connections
+      else if (msg.includes("connect") || msg.includes("connection")) {
+        category = "connection";
+      }
+      // Check if it's spam or sales
+      else if (
+        msg.includes("sale") ||
+        msg.includes("offer") ||
+        msg.includes("sponsored")
+      ) {
+        category = "spam";
+      }
+    } catch (innerError) {
+      console.error("Had trouble with this conversation:", innerError);
+    }
+  });
 }
