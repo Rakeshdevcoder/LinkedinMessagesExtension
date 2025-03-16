@@ -22,4 +22,15 @@ async function fetchLinkedInMessages() {
 
   console.log("Starting to look for LinkedIn messages");
 
+  // Wait for linkedin messaging tab to load
+  await new Promise((resolve) => setTimeout(resolve, 2500));
+
+  // Finding all conversations
+  let conversations = document.querySelectorAll("li.msg-conversation-listitem");
+
+  if (!conversations || conversations.length === 0) {
+    throw new Error("No messages found. Make sure you're on the right page!");
+  }
+  console.log("Found this many conversations:", conversations.length);
+
 }
