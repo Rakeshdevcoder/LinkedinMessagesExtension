@@ -23,14 +23,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Check if user opened  LinkedIn.com  else tell user to go to linked.com website
+  // Check if we're on LinkedIn and load messages
   function checkLinkedInAndLoadMessages() {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const currentTab = tabs[0];
       if (currentTab && currentTab.url.includes("linkedin.com")) {
         fetchMessagesFromLinkedIn();
       } else {
-        showStatus("Please go to LinkedIn website", "error");
+        showStatus("Please go to LinkedIn website first!", "error");
       }
     });
   }
@@ -62,6 +62,32 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             const errorMsg = response ? response.error : "Something went wrong";
             showStatus(`Couldn't get messages: ${errorMsg}`, "error");
+          }
+        }
+      );
+    });
+  }
+
+  function deleteConversationFromLinkedIn(sender, content) {
+    showStatus(`Deleting message from ${sender}...`, "pending");
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: "deleteConversation", sender: sender },
+        function (response) {
+          if (chrome.runtime.lastError) {
+            showStatus(
+              "Couldn't connect to LinkedIn. Try refreshing the page.",
+              "error"
+            );
+            return;
+          }
+
+          if (response && response.success) {
+            allMessages = allMessages.filter(
+              (m) => !(m.sender === sender && m.content === content)
+            );
+            displayMessages(allMessages);
           }
         }
       );
@@ -133,6 +159,10 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(() => {
         statusElement.style.display = "none";
       }, 3000);
+    }
+
+    if (type === "pending") {
+      statusElement.innerHTML = `${message} <span class="spinner"></span>`;
     }
   }
 });
