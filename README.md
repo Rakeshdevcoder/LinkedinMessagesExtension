@@ -21,7 +21,7 @@ This tool helps you grab your LinkedIn messages. A simple Chrome extension that 
 - Then select the cloned folder where you have cloned LinkedinMessagesExtension folder, Select that folder (LinkedinMessagesExtension) only , then press select folder
 - Extension is been installed
 - Go to linkedin.com and signin to your account
-- Open extension in extension option on top right left on browser (It will tell you to visit Messaging tab)
+- Open LinkedIn MEssages extension in extension option on top right of the browser (It will tell you to visit Messaging tab)
 - Click on Messaging option in linkedin app bar where you see all your DM Messages
 - Again click on extension and click on LinkedinMessagesExtension 
 - The extension will show all your messages organized by type
