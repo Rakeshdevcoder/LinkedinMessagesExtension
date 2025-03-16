@@ -10,6 +10,19 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
       });
     return true;
   }
+
+  if (req.action === "deleteConversation") {
+    const senderToDelete = req.sender;
+    findAndDeleteConversation(senderToDelete)
+      .then((result) => {
+        sendResponse(result);
+      })
+      .catch((error) => {
+        console.error("Couldn't delete the conversation:", error);
+        sendResponse({ success: false, message: error.message });
+      });
+    return true;
+  }
 });
 
 // Getting all LinkedIn Messages
@@ -121,10 +134,7 @@ async function fetchLinkedInMessages() {
     console.error("Something went wrong getting messages:", error);
     throw error;
   }
-
-
 }
-
 
 // This function finds and deletes a conversation
 async function findAndDeleteConversation(senderName) {
