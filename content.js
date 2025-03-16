@@ -125,43 +125,71 @@ async function fetchLinkedInMessages() {
 
 }
 
+
+// This function finds and deletes a conversation
+async function findAndDeleteConversation(senderName) {
+  // Find all conversations
+  const conversations = document.querySelectorAll(
+    "li.msg-conversation-listitem"
+  );
+  let targetConvo = null;
+
+  for (const convo of conversations) {
+    const senderElem = convo.querySelector(
+      "h3.msg-conversation-listitem__participant-names span.truncate"
+    );
+    const currentSender = senderElem ? senderElem.textContent.trim() : "";
+
+    if (currentSender === senderName) {
+      targetConvo = convo;
+      break;
+    }
+  }
+
+  if (!targetConvo) {
+    return { success: false, message: "Couldn't find that conversation" };
+  }
+
   // Find the three dots menu button to delete the conversation
 
-  const dotButton = targetConvo.querySelector(
-    "div.artdeco-dropdown button.artdeco-dropdown__trigger"
-  );
-  if (dotButton) {
-    // Click the menu button
-    dotButton.click();
-    console.log("Clicked the menu button");
+  return new Promise((resolve) => {
+    const dotButton = targetConvo.querySelector(
+      "div.artdeco-dropdown button.artdeco-dropdown__trigger"
+    );
+    if (dotButton) {
+      // Click the menu button
+      dotButton.click();
+      console.log("Clicked the menu button");
 
-    // Wait a bit for the menu to show up
-    setTimeout(() => {
-      const menuItems = document.querySelectorAll(
-        "div.artdeco-dropdown__content li"
-      );
-      let deleteOption = null;
+      // Wait a bit for the menu to show up
+      setTimeout(() => {
+        const menuItems = document.querySelectorAll(
+          "div.artdeco-dropdown__content li"
+        );
+        let deleteOption = null;
 
-      // Look for the delete option
-      for (const item of menuItems) {
-        if (
-          item.textContent &&
-          item.textContent.toLowerCase().includes("delete conversation")
-        ) {
-          deleteOption = item;
-          break;
+        // Look for the delete option
+        for (const item of menuItems) {
+          if (
+            item.textContent &&
+            item.textContent.toLowerCase().includes("delete conversation")
+          ) {
+            deleteOption = item;
+            break;
+          }
         }
-      }
 
-      // found the delete button
-      if (deleteOption) {
-        deleteOption.click();
-        console.log("Clicked delete button");
-        resolve({ success: true, message: "Trying to delete now" });
-      } else {
-        resolve({ success: false, message: "Couldn't find delete button" });
-      }
-    }, 500);
-  } else {
-    resolve({ success: false, message: "Couldn't find menu button" });
-  }
+        // found the delete button
+        if (deleteOption) {
+          deleteOption.click();
+          console.log("Clicked delete button");
+          resolve({ success: true, message: "Trying to delete now" });
+        } else {
+          resolve({ success: false, message: "Couldn't find delete button" });
+        }
+      }, 500);
+    } else {
+      resolve({ success: false, message: "Couldn't find menu button" });
+    }
+  });
+}
