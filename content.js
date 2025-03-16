@@ -121,4 +121,47 @@ async function fetchLinkedInMessages() {
     console.error("Something went wrong getting messages:", error);
     throw error;
   }
+
+
 }
+
+  // Find the three dots menu button to delete the conversation
+
+  const dotButton = targetConvo.querySelector(
+    "div.artdeco-dropdown button.artdeco-dropdown__trigger"
+  );
+  if (dotButton) {
+    // Click the menu button
+    dotButton.click();
+    console.log("Clicked the menu button");
+
+    // Wait a bit for the menu to show up
+    setTimeout(() => {
+      const menuItems = document.querySelectorAll(
+        "div.artdeco-dropdown__content li"
+      );
+      let deleteOption = null;
+
+      // Look for the delete option
+      for (const item of menuItems) {
+        if (
+          item.textContent &&
+          item.textContent.toLowerCase().includes("delete conversation")
+        ) {
+          deleteOption = item;
+          break;
+        }
+      }
+
+      // found the delete button
+      if (deleteOption) {
+        deleteOption.click();
+        console.log("Clicked delete button");
+        resolve({ success: true, message: "Trying to delete now" });
+      } else {
+        resolve({ success: false, message: "Couldn't find delete button" });
+      }
+    }, 500);
+  } else {
+    resolve({ success: false, message: "Couldn't find menu button" });
+  }
