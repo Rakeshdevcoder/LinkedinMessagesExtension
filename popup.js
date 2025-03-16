@@ -34,4 +34,37 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  function fetchMessagesFromLinkedIn() {
+    showStatus("Getting your messages...", "success");
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      if (!tabs || tabs.length === 0) {
+        showStatus("No active tab found", "error");
+        return;
+      }
+
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: "fetchMessages" },
+        function (response) {
+          if (chrome.runtime.lastError) {
+            console.error(chrome.runtime.lastError);
+            showStatus(
+              "Couldn't connect to LinkedIn. Try refreshing the page.",
+              "error"
+            );
+            return;
+          }
+          if (response && response.success) {
+            allMessages = response.messages;
+            displayMessages(allMessages);
+            showStatus(`Found ${allMessages.length} messages`, "success");
+          } else {
+            const errorMsg = response ? response.error : "Something went wrong";
+            showStatus(`Couldn't get messages: ${errorMsg}`, "error");
+          }
+        }
+      );
+    });
+  }
 });
