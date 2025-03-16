@@ -68,6 +68,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  //Display messages based on current filter
+  function displayMessages(messages) {
+    messagesContainer.innerHTML = "";
+    let filteredMessages = messages;
+
+    if (currentFilter === "spam") {
+      filteredMessages = messages.filter((msg) => msg.category === "spam");
+    } else if (currentFilter === "job") {
+      filteredMessages = messages.filter((msg) => msg.category === "job");
+    } else if (currentFilter === "connection") {
+      filteredMessages = messages.filter(
+        (msg) => msg.category === "connection"
+      );
+    }
+  }
+
   // Show status messages to the user
   function showStatus(message, type) {
     statusElement.textContent = message;
