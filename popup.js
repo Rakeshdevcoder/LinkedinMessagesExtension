@@ -67,4 +67,17 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     });
   }
+
+  // Show status messages to the user
+  function showStatus(message, type) {
+    statusElement.textContent = message;
+    statusElement.className = type;
+    statusElement.style.display = "block";
+
+    if (type === "success") {
+      setTimeout(() => {
+        statusElement.style.display = "none";
+      }, 3000);
+    }
+  }
 });
