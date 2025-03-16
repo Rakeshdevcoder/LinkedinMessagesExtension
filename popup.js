@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  //Display messages based on current filter
+  // Display messages based on current filter
   function displayMessages(messages) {
     messagesContainer.innerHTML = "";
     let filteredMessages = messages;
@@ -81,6 +81,45 @@ document.addEventListener("DOMContentLoaded", function () {
       filteredMessages = messages.filter(
         (msg) => msg.category === "connection"
       );
+    }
+
+    if (filteredMessages.length === 0) {
+      messagesContainer.innerHTML = `<p class='no-messages'>No ${
+        currentFilter !== "all" ? currentFilter + " " : ""
+      }messages found</p>`;
+    } else {
+      filteredMessages.forEach((msg) => {
+        const messageElement = document.createElement("div");
+        messageElement.className = `message ${msg.category}`;
+
+        const categoryBadge = document.createElement("span");
+        categoryBadge.className = `category-badge ${msg.category}`;
+        categoryBadge.textContent = msg.category;
+
+        messageElement.innerHTML = `
+          <div class="message-header">
+            <div class="sender">${msg.sender}</div>
+          </div>
+          <div class="message-content">${msg.content}</div>
+        `;
+
+        const headerDiv = messageElement.querySelector(".message-header");
+        headerDiv.appendChild(categoryBadge);
+
+        if (msg.category === "spam") {
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "delete-btn";
+          deleteBtn.textContent = "Delete";
+          deleteBtn.addEventListener("click", function () {
+            deleteConversationFromLinkedIn(msg.sender, msg.content);
+            this.disabled = true;
+            this.textContent = "Deleting...";
+          });
+          messageElement.appendChild(deleteBtn);
+        }
+
+        messagesContainer.appendChild(messageElement);
+      });
     }
   }
 
