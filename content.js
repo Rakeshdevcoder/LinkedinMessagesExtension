@@ -11,3 +11,15 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
     return true;
   }
 });
+
+// Getting all LinkedIn Messages
+async function fetchLinkedInMessages() {
+  if (!window.location.href.includes("linkedin.com"))
+    throw new Error("You need to go to LinkedIn first");
+
+  if (!window.location.href.includes("/messaging"))
+    throw new Error("Please go to your LinkedIn messages");
+
+  console.log("Starting to look for LinkedIn messages");
+
+}
