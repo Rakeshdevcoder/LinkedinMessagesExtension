@@ -5,7 +5,7 @@
 
 
 
-This tool helps you grab your LinkedIn messages. A simple Chrome extension that helps you organize and clean up your LinkedIn messages.Feel free to contact me at rakeshrathod.contact@gmail.com
+This tool helps you grab your LinkedIn messages. A simple Chrome extension that helps you organize and clean up your LinkedIn messages.Feel free to contact me at rakeshrathod.contact@gmail.com . Here is Demo video how to use it https://drive.google.com/file/d/1-GgfDNR25FNmows5-uvqrNu_oR5NRp74/view?usp=drive_link
 
 ## What this extension does
 - See all your LinkedIn messages in one place
